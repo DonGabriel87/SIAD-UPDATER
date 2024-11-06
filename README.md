@@ -13,13 +13,14 @@ Jhovany J.
 > Requisitos del sistema
 > - Hardware
 >   
-> 20 MB libres de espacio
+>   - 20 MB libres de espacio
 >  
 > - Software
 > 
->   Java 8
-
+>   - Java 8
+```
    \    /\
     )  ( ')    <-  (MEOW)
     (  /  )
-     \(__)|
+     \(__)| 
+```

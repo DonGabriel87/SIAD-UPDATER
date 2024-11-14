@@ -7,13 +7,13 @@ SIAD-UPDATER es un proyecto open-source que tiene la finalidad de automatizar el
 todo con el fin de hacer esta tarea tan tediosa más sencilla.
 
 ## Ejecutando el proyecto
-Para poder dar inicio con la ejecución del proyecto es importante considerar que esta herramienta requiere **privilegios de administrador**, de otra forma no podremos lograr compilarlo a menos de que comentemos momentaneamente el método **isProgramRunningWithAdminPrivileges()** ubicado en el archivo main.java, de ser el caso que se haga esta modificación, ingnoraremos la verificación de que el proceso se esté corriendo con prvilegios elevados.
+Para poder dar inicio con la ejecución del proyecto es importante considerar que esta herramienta requiere **privilegios de administrador**, de otra forma no podremos lograr compilarlo a menos de que comentemos momentáneamente el método **isProgramRunningWithAdminPrivileges()** ubicado en el archivo main.java, de ser el caso que se haga esta modificación, ignoráremos la verificación de que el proceso se esté corriendo con privilegios elevados.
 
 Si elegimos este camino no se asegura el éxito de las tareas de movimientos de archivos a nivel raíz del disco, por lo que es recomendable hacerlo de la siguiente manera: 
-Para lograr ejecutarlo de manera correcta es posible lograrlo de varias maneras pero para este caso mostraré dos formas.
+Para lograr ejecutarlo de manera correcta es posible lograrlo de varias maneras, pero, para este caso mostraré dos formas de hacerlo.
 
 ### Primer forma
-En caso de que que se te posibilite, puedes hacer clic derecho sobre el archivo .jar  propiedades -> General -> Avanzado -> Ejecutar como administrador.
+En caso de que se te posibilite, puedes hacer clic derecho sobre el archivo .jar  propiedades -> General -> Avanzado -> Ejecutar como administrador.
 En mi caso en Windows 11 Pro versión 23H2 no me da la opción de hacerlo de esta manera por lo que recomiendo hacerla de la **segunda forma** en caso de
 que tengan el mismo problema.
 
@@ -42,10 +42,10 @@ java -jar "%JAR_FILE%"
 pause
 ```
 
-Posterior a ello lo guardaremos con el nombre que gustes pero con el formato .bat y estaría listo para usarse SIAD-UPDATER.
+Posterior a ello lo guardaremos con el nombre que mas nos guste, pero con el formato .bat de este modo estaría listo para usarse SIAD-UPDATER.
 
 > [!TIP]
-> Te recomendamos crear un acceso directo a ese archivo que has creado y colocarlo donde más gustes.
+> Es recomendable crear un acceso directo a ese archivo .bat que has creado y colocarlo donde más gustes.
 
 ## Otras consideraciones
 

@@ -30,7 +30,7 @@ public class MainFrame extends javax.swing.JFrame implements MouseListener {
         lblNombrePrograma = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SIAD-UPDATER V 0.8.1");
+        setTitle("SIAD-UPDATER v1.0");
         setBackground(new java.awt.Color(204, 132, 217));
         setMinimumSize(new java.awt.Dimension(616, 411));
         setName("MainFrame"); // NOI18N
@@ -57,7 +57,7 @@ public class MainFrame extends javax.swing.JFrame implements MouseListener {
 
         lblNombrePrograma.setFont(new java.awt.Font("Eras Demi ITC", 0, 24)); // NOI18N
         lblNombrePrograma.setForeground(new java.awt.Color(80, 80, 80));
-        lblNombrePrograma.setText("SIAD-UPDATER V 0.8.1");
+        lblNombrePrograma.setText("SIAD-UPDATER v1.0");
         panelInferior.add(lblNombrePrograma, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(panelInferior, java.awt.BorderLayout.SOUTH);
@@ -67,7 +67,7 @@ public class MainFrame extends javax.swing.JFrame implements MouseListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        Classes.Core.Utilities.JPanelUtilities.openJPanelOnPanel(panelContenedor, new StartUpTemplate(this));
+        Classes.Core.Utilities.JPanelUtil.openJPanelOnPanel(panelContenedor, new StartUpTemplate(this));
     }//GEN-LAST:event_formWindowOpened
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

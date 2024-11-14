@@ -1,5 +1,6 @@
 package Interfaces.Templates;
 
+import Classes.Core.App.Cache;
 import Classes.Core.App.Task;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -70,7 +71,6 @@ public class WorkFlowTemplate extends javax.swing.JPanel implements MouseListene
         panelSuperior.setBackground(new java.awt.Color(244, 244, 244));
         panelSuperior.setPreferredSize(new java.awt.Dimension(972, 100));
 
-        indicadorAvance.setToolTipText("Flujo de trabajo del proceso de actualización");
         indicadorAvance.setDoubleBuffered(true);
         indicadorAvance.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Inicio", "Selección de directorios", "Vista directorios", "Actualizando", "Fin" };
@@ -163,7 +163,6 @@ public class WorkFlowTemplate extends javax.swing.JPanel implements MouseListene
 
         btnCancelar.setBackground(new java.awt.Color(204, 204, 204));
         btnCancelar.setText("Cancelar");
-        btnCancelar.setToolTipText("Cancela el proceso");
         btnCancelar.setFocusPainted(false);
         btnCancelar.setFont(new java.awt.Font("Eras Demi ITC", 0, 16)); // NOI18N
         btnCancelar.setRippleColor(new java.awt.Color(51, 51, 51));
@@ -220,11 +219,7 @@ public class WorkFlowTemplate extends javax.swing.JPanel implements MouseListene
     private void btnSiguienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSiguienteMouseClicked
         switch (indicadorAvance.getProgressIndex()) {
             case 1:
-                if (!hayTareasPendientes(1)) {
-                    indicadorAvance.next();
-                } else {
-                    JOptionPane.showMessageDialog(this, obtenerMensajeTarea(1), "Tareas pendientes", JOptionPane.INFORMATION_MESSAGE);
-                }
+                validatePathsDirectorySelection();
                 break;
             case 2:
                 btnSiguiente.setBackground(new Color(51, 51, 51));
@@ -234,36 +229,33 @@ public class WorkFlowTemplate extends javax.swing.JPanel implements MouseListene
                 break;
             case 3:
                 break;
-      
             default:
                 indicadorAvance.next();
         }
     }//GEN-LAST:event_btnSiguienteMouseClicked
 
-    private int revisarCantidadTareasPendientes(int id) {
-        int contador = 0;
-
-        if (Classes.Core.App.Cache.getPendingTasks().isEmpty()) {
-            return contador;
+    private void validatePathsDirectorySelection() {
+        if (Cache.getOripath() == null || Cache.getDespath() == null) {
+            JOptionPane.showMessageDialog(
+                    this, 
+                       "Es necesario que rellenes todos los campos que se te piden",
+                       "Tareas pendientes",
+                       JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
         }
-
-        for (Task tarea : Classes.Core.App.Cache.getPendingTasks()) {
-            if (tarea.getId() == id) {
-                contador++;
-            }
+        if(!Classes.Core.IO.Files.isValidDestination(Cache.getOripath(), Cache.getDespath())) {
+            JOptionPane.showMessageDialog(
+                    this, 
+                       "No es posible mover archivos entre directorios que tengan relación directa o que sean subdirectorios uno del otro",
+                       "Delimitación de directorios no controlada",
+                       JOptionPane.WARNING_MESSAGE
+            );
+            return;
         }
-        return contador;
+        indicadorAvance.next();
     }
-
-    private boolean hayTareasPendientes(int id) {
-        return 0 != revisarCantidadTareasPendientes(id);
-    }
-
-    private String obtenerMensajeTarea(int id) {
-        return Classes.Core.App.Cache.getPendingTasks().elementAt(0).getMessage();
-    }
-
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Classes.UI.Java2D.JCustomButtom.JCustomButton btnAtras;
     private Classes.UI.Java2D.JCustomButtom.JCustomButton btnCancelar;

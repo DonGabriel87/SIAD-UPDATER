@@ -3,7 +3,7 @@ package Classes.Core.Utilities;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
-public abstract class JPanelUtilities {
+public abstract class JPanelUtil {
     /**
      * Añade un JPanel dentro de otro
      * @param parentPanel

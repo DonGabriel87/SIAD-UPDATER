@@ -2,14 +2,18 @@ package Interfaces.Templates;
 
 import Classes.UI.Java2D.JGlassPanelPopUp.JGlassPanePopup;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import java.net.URI;
 
 public class InfoTemplate extends javax.swing.JPanel {
 
@@ -62,7 +66,6 @@ public class InfoTemplate extends javax.swing.JPanel {
         panelDerecho.setPreferredSize(new java.awt.Dimension(160, 373));
 
         btnAceptar.setText("Aceptar");
-        btnAceptar.setToolTipText("Aceptar y salir de la ventana");
         btnAceptar.setFocusPainted(false);
         btnAceptar.setFont(new java.awt.Font("Eras Demi ITC", 0, 16)); // NOI18N
         btnAceptar.setRippleColor(new java.awt.Color(153, 153, 153));
@@ -118,7 +121,7 @@ public class InfoTemplate extends javax.swing.JPanel {
     private void btnAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseClicked
         JGlassPanePopup.closePopup("Info");
     }//GEN-LAST:event_btnAceptarMouseClicked
-    
+
     @Override
     protected void paintComponent(Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D) graphics.create();
@@ -128,8 +131,8 @@ public class InfoTemplate extends javax.swing.JPanel {
         graphics2D.dispose();
         super.paintComponent(graphics);
     }
-    
-    private void writeText() {
+
+  private void writeText() {
         StyledDocument doc = texto.getStyledDocument();
 
         // Estilos
@@ -137,6 +140,9 @@ public class InfoTemplate extends javax.swing.JPanel {
         StyleConstants.setBold(estiloNegrita, true);
         Style estiloRojo = texto.addStyle("Rojo", null);
         StyleConstants.setForeground(estiloRojo, Color.RED);
+        Style estiloAzul = texto.addStyle("Azul", null);
+        StyleConstants.setForeground(estiloAzul, Color.BLUE);
+        StyleConstants.setUnderline(estiloAzul, true);  // Agregamos subrayado
         Style estiloGrande = texto.addStyle("Grande", null);
         StyleConstants.setFontSize(estiloGrande, 24);
 
@@ -154,12 +160,34 @@ public class InfoTemplate extends javax.swing.JPanel {
             doc.insertString(doc.getLength(), " realiza tareas de configuración de los datos de la aplicación ni alguna otra tarea adicional.\n\n", null);
             doc.insertString(doc.getLength(), "Acerca de la aplicación:\n", estiloGrande);
             doc.insertString(doc.getLength(), "Versión de la aplicación: ", null);
-            doc.insertString(doc.getLength(), "V 0.8.1\n", estiloNegrita);
+            doc.insertString(doc.getLength(), "v1.0\n", estiloNegrita);
             doc.insertString(doc.getLength(), "Fecha de versión: ", null);
-            doc.insertString(doc.getLength(), "2024/11/01", estiloNegrita);
-            
+            doc.insertString(doc.getLength(), "2024/11/13\n", estiloNegrita);
+            doc.insertString(doc.getLength(), "Documentación de la aplicación: ", null);
+            doc.insertString(doc.getLength(), "https://github.com/DonGabriel87/SIAD-UPDATER", estiloAzul);
         } catch (BadLocationException e) {
+            e.printStackTrace();
         }
+
+        // Obtener la posición donde se insertó el texto del enlace
+        final int linkStart = doc.getLength() - "github.com/example".length();
+        final int linkEnd = doc.getLength();
+
+        // Añadir el evento de clic al enlace
+        texto.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    int offset = texto.viewToModel(e.getPoint());  // Usamos viewToModel
+                    if (offset >= linkStart && offset <= linkEnd) {
+                        // Si el clic está dentro del rango del enlace
+                        Desktop.getDesktop().browse(new URI("https://github.com/DonGabriel87/SIAD-UPDATER"));
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

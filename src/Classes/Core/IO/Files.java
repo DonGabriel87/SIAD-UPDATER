@@ -7,7 +7,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
 import Classes.Core.App.Cache;
-import Classes.Core.Utilities.Time;
+import Classes.Core.Utilities.TimeUtil;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public abstract class Files {
 
@@ -66,6 +68,15 @@ public abstract class Files {
         }
     }
 
+    /**
+     * Método para poder mover los archivos que sean necesarios de una ubicación
+     * a otra
+     *
+     * @param jpbProgresoActualizacion Objeto instanciado para el progreso de
+     * las actualizaciones.
+     * @param lblEstadoProgreso Objeto instanciado para los mensajes de las
+     * actualizaciones.
+     */
     public static void moveFiles(javax.swing.JProgressBar jpbProgresoActualizacion, javax.swing.JTextArea lblEstadoProgreso) {
         File sourceDir = new File(Classes.Core.App.Cache.getOripath());
         File targetDir = new File(Classes.Core.App.Cache.getDespath());
@@ -89,7 +100,7 @@ public abstract class Files {
                 File[] files = dir.listFiles(File::isFile);
                 jpbProgresoActualizacion.setValue(12);
 
-                int porcentaje = 0;
+                int porcentaje;
                 int i = 0;
 
                 if (files != null) {
@@ -100,7 +111,7 @@ public abstract class Files {
                         if (targetFile.exists()) {
                             boolean deleted = targetFile.delete();
                             if (!deleted) {
-                                System.out.println(String.format("[%s] - No se pudo eliminar el archivo existente: %s", Time.getCurrentTime(),targetFile.getPath()));
+                                System.out.println(String.format("[%s] - No se pudo eliminar el archivo existente: %s", TimeUtil.getCurrentTime(), targetFile.getPath()));
                                 continue; // Salta el archivo si no se pudo eliminar
                             }
                         }
@@ -108,22 +119,35 @@ public abstract class Files {
                         // Intenta mover el archivo
                         boolean moved = file.renameTo(targetFile);
                         if (moved) {
-                            System.out.println(String.format("[%s] - Archivo movido: de %s\\%s a %s", Time.getCurrentTime(), dir.getPath(), file.getName(), targetFile.getPath()));
+                            System.out.println(String.format("[%s] - Archivo movido: de %s\\%s a %s", TimeUtil.getCurrentTime(), dir.getPath(), file.getName(), targetFile.getPath()));
                             Cache.setTotalMovedFiles(Cache.getTotalMovedFiles() + 1);
                         } else {
-                            System.out.println(String.format("[%s] - Error al mover: %s", Time.getCurrentTime(),file.getName()));
+                            System.out.println(String.format("[%s] - Error al mover: %s", TimeUtil.getCurrentTime(), file.getName()));
                             Cache.setTotalUnMovedFiles(Cache.getTotalUnMovedFiles() + 1);
                         }
                         porcentaje = (int) (i++ * 100) / files.length;
                         jpbProgresoActualizacion.setValue(porcentaje);
-                        try {
-                            Thread.sleep(500);
-                        } catch (Exception e) {
-                        }
                     }
                 }
             }
         }
+    }
+    
+    /**
+     * Valida que los directorios no tengan relación directa o que sean subdirectorios uno del otro
+     * @param sourceDirPath
+     * Ruta del archivo de origen
+     * @param targetDirPath
+     * Ruta del archivo de destino
+     * @return 
+     * Devuelve el resultado de la operación
+     */
+    public static boolean isValidDestination(String sourceDirPath, String targetDirPath) {
+        Path sourcePath = Paths.get(sourceDirPath).normalize();
+        Path targetPath = Paths.get(targetDirPath).normalize();
+
+        // Verifica si la ruta de destino está dentro de la ruta de origen
+        return !targetPath.startsWith(sourcePath);
     }
 
     // Método para extraer el número después del guion bajo del nombre del directorio

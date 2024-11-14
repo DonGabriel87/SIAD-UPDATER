@@ -109,9 +109,19 @@ public class Updating extends javax.swing.JPanel {
                 btnComenzarActualizacion.setEnabled(true);
                 btnComenzarActualizacion.setText("Terminar");
                 btnComenzarActualizacion.setName("Updating - EndProcess");
-                updateProgressBar(100, "Proceso de actualización terminado");
+                updateProgressBar(
+                        100, 
+                        String.format(
+                                "Proceso de actualización terminado.\nSe movieron un total de %s archivos", 
+                                   String.valueOf(Classes.Core.App.Cache.getTotalMovedFiles())
+                ));
                 if(Classes.Core.App.Cache.getTotalUnMovedFiles() != 0) {
-                    JOptionPane.showMessageDialog(null, "El proceso ha terminado con errores, favor de verificar la consola");
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            String.format("Hubieron %s que no pudieron ser movidos\nverifique la consola para más información", String.valueOf(Classes.Core.App.Cache.getTotalUnMovedFiles())), 
+                        "Operación terminada con erroreres",
+                            JOptionPane.WARNING_MESSAGE
+                    );
                     System.exit(-1);
                 }
             }

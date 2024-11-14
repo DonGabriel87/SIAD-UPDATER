@@ -1,5 +1,9 @@
 package Interfaces.Templates.Process;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import org.omg.CORBA.UNKNOWN;
+
 public class DirectorySelection extends javax.swing.JPanel {
 
     /**
@@ -7,7 +11,7 @@ public class DirectorySelection extends javax.swing.JPanel {
      */
     public DirectorySelection() {
         initComponents();
-        Classes.Core.App.Cache.getPendingTasks().push(new Classes.Core.App.Task(1, "Es necesario rellenar las direcciones de las rutas antes de poder continuar"));
+        addPopUpJLabel();
     }
 
     /**
@@ -26,7 +30,7 @@ public class DirectorySelection extends javax.swing.JPanel {
         panelCarpetaDestino = new javax.swing.JPanel();
         lblRutaCarpetaDestino = new javax.swing.JLabel();
         lblTituloCarpetaDestino = new javax.swing.JLabel();
-        btnBUscarCarpetaDatosDestino = new Classes.UI.Java2D.JCustomButtom.JCustomButton();
+        btnBuscarCarpetaDatosDestino = new Classes.UI.Java2D.JCustomButtom.JCustomButton();
 
         setLayout(new java.awt.GridLayout(2, 1));
 
@@ -40,6 +44,7 @@ public class DirectorySelection extends javax.swing.JPanel {
         btnBuscarCarpetaDatosOrigen.setText("Buscar");
         btnBuscarCarpetaDatosOrigen.setFocusPainted(false);
         btnBuscarCarpetaDatosOrigen.setFont(new java.awt.Font("Eras Demi ITC", 0, 16)); // NOI18N
+        btnBuscarCarpetaDatosOrigen.setName("origen"); // NOI18N
         btnBuscarCarpetaDatosOrigen.setRippleColor(new java.awt.Color(153, 153, 153));
         btnBuscarCarpetaDatosOrigen.setShadowColor(new java.awt.Color(0, 0, 0));
         btnBuscarCarpetaDatosOrigen.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -89,14 +94,15 @@ public class DirectorySelection extends javax.swing.JPanel {
         lblTituloCarpetaDestino.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblTituloCarpetaDestino.setText("Selecciona la carpeta en donde se encuentra la carpeta a actualizar:");
 
-        btnBUscarCarpetaDatosDestino.setText("Buscar");
-        btnBUscarCarpetaDatosDestino.setFocusPainted(false);
-        btnBUscarCarpetaDatosDestino.setFont(new java.awt.Font("Eras Demi ITC", 0, 16)); // NOI18N
-        btnBUscarCarpetaDatosDestino.setRippleColor(new java.awt.Color(153, 153, 153));
-        btnBUscarCarpetaDatosDestino.setShadowColor(new java.awt.Color(0, 0, 0));
-        btnBUscarCarpetaDatosDestino.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnBuscarCarpetaDatosDestino.setText("Buscar");
+        btnBuscarCarpetaDatosDestino.setFocusPainted(false);
+        btnBuscarCarpetaDatosDestino.setFont(new java.awt.Font("Eras Demi ITC", 0, 16)); // NOI18N
+        btnBuscarCarpetaDatosDestino.setName("destino"); // NOI18N
+        btnBuscarCarpetaDatosDestino.setRippleColor(new java.awt.Color(153, 153, 153));
+        btnBuscarCarpetaDatosDestino.setShadowColor(new java.awt.Color(0, 0, 0));
+        btnBuscarCarpetaDatosDestino.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnBUscarCarpetaDatosDestinoMouseClicked(evt);
+                btnBuscarCarpetaDatosDestinoMouseClicked(evt);
             }
         });
 
@@ -111,7 +117,7 @@ public class DirectorySelection extends javax.swing.JPanel {
                     .addGroup(panelCarpetaDestinoLayout.createSequentialGroup()
                         .addComponent(lblTituloCarpetaDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
-                        .addComponent(btnBUscarCarpetaDatosDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnBuscarCarpetaDatosDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelCarpetaDestinoLayout.setVerticalGroup(
@@ -120,7 +126,7 @@ public class DirectorySelection extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(panelCarpetaDestinoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTituloCarpetaDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBUscarCarpetaDatosDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnBuscarCarpetaDatosDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(lblRutaCarpetaDestino)
                 .addContainerGap(75, Short.MAX_VALUE))
@@ -131,31 +137,78 @@ public class DirectorySelection extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarCarpetaDatosOrigenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarCarpetaDatosOrigenMouseClicked
-        String path = Classes.Core.IO.Files.getSelectedDirectoryPath();
-        if(!path.isEmpty()) {
-            lblRutaCarpetaOrigen.setText(path);
-            Classes.Core.App.Cache.setOripath(path);
-        }
-        validarRutas();
+        selectPath(btnBuscarCarpetaDatosOrigen.getName());
     }//GEN-LAST:event_btnBuscarCarpetaDatosOrigenMouseClicked
 
-    private void btnBUscarCarpetaDatosDestinoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBUscarCarpetaDatosDestinoMouseClicked
-        String path = Classes.Core.IO.Files.getSelectedDirectoryPath();
-        if(!path.isEmpty()) {
-            lblRutaCarpetaDestino.setText(path);
-            Classes.Core.App.Cache.setDespath(path);
-        }
-        validarRutas();
-    }//GEN-LAST:event_btnBUscarCarpetaDatosDestinoMouseClicked
+    private void btnBuscarCarpetaDatosDestinoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarCarpetaDatosDestinoMouseClicked
+        selectPath(btnBuscarCarpetaDatosDestino.getName());
+    }//GEN-LAST:event_btnBuscarCarpetaDatosDestinoMouseClicked
 
-    private void validarRutas() {
-        if(Classes.Core.App.Cache.getDespath() != null && Classes.Core.App.Cache.getDespath() != null){
-            Classes.Core.App.Cache.getPendingTasks().pop();
+    private void addPopUpJLabel() {
+        JPopupMenu jPopupMenuCarpetaOrigen = createPopupMenu("origen");
+        JPopupMenu jPopupMenuCarpetaDestino = createPopupMenu("destino");
+
+        jPopupMenuCarpetaOrigen.setLightWeightPopupEnabled(false);
+        jPopupMenuCarpetaDestino.setLightWeightPopupEnabled(false);
+
+        panelCarpetaOrigen.setComponentPopupMenu(jPopupMenuCarpetaOrigen);
+        panelCarpetaDestino.setComponentPopupMenu(jPopupMenuCarpetaDestino);
+    }
+
+    private JPopupMenu createPopupMenu(String type) {
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem jmiMostrarTodos = new JMenuItem("Seleccionar ruta de " + type);
+        jmiMostrarTodos.setToolTipText("Selecciona la ruta de " + type);
+        jmiMostrarTodos.addActionListener(e -> selectPath(type));
+        popupMenu.add(jmiMostrarTodos);
+
+        JMenuItem jmiMostrarCarpeta = new JMenuItem("Copiar la ruta al portapapeles");
+        jmiMostrarCarpeta.setToolTipText("Copea la ruta del directorio de la carpeta de " + type + " en tu portapapeles");
+        jmiMostrarCarpeta.addActionListener(e -> copyPath(type));
+        popupMenu.add(jmiMostrarCarpeta);
+
+        return popupMenu;
+    }
+
+    private void selectPath(String type) {
+        String path = Classes.Core.IO.Files.getSelectedDirectoryPath();
+        if (path.isEmpty()) {
+            return;
+        }
+
+        switch (type) {
+            case "origen":
+                lblRutaCarpetaOrigen.setText(path);
+                Classes.Core.App.Cache.setOripath(path);
+                break;
+            case "destino":
+                lblRutaCarpetaDestino.setText(path);
+                Classes.Core.App.Cache.setDespath(path);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid operation");
+        }
+    }
+
+    private void copyPath(String type) {
+        switch (type) {
+            case "origen":
+                String oriPath = Classes.Core.App.Cache.getOripath();
+                if(oriPath != null)
+                    Classes.Core.Utilities.ClipboardUtil.copyTextToClipboard(oriPath);
+                break;
+            case "destino":
+                String desPath = Classes.Core.App.Cache.getDespath();
+                if(desPath != null)
+                    Classes.Core.Utilities.ClipboardUtil.copyTextToClipboard(desPath);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid operation");
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Classes.UI.Java2D.JCustomButtom.JCustomButton btnBUscarCarpetaDatosDestino;
+    private Classes.UI.Java2D.JCustomButtom.JCustomButton btnBuscarCarpetaDatosDestino;
     private Classes.UI.Java2D.JCustomButtom.JCustomButton btnBuscarCarpetaDatosOrigen;
     private javax.swing.JLabel lblRutaCarpetaDestino;
     private javax.swing.JLabel lblRutaCarpetaOrigen;

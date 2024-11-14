@@ -5,7 +5,6 @@ import java.util.Stack;
 public abstract class Cache {
     private static String despath;
     private static String oripath;
-    private static Stack<Task> pendingTasks = new Stack<>();
     private static int totalMovedFiles;
     private static int totalUnMovedFiles;
 
@@ -23,15 +22,7 @@ public abstract class Cache {
 
     public static void setOripath(String oripath) {
         Cache.oripath = oripath;
-    }
-
-    public static Stack<Task> getPendingTasks() {
-        return pendingTasks;
-    }
-
-    public static void setPendingTasks(Stack<Task> pendingTasks) {
-        Cache.pendingTasks = pendingTasks;
-    }   
+    } 
 
     public static int getTotalMovedFiles() {
         return totalMovedFiles;
@@ -54,7 +45,6 @@ public abstract class Cache {
     public static void disposeData() {
         Cache.despath = null;
         Cache.oripath = null;
-        Cache.pendingTasks.clear();
         Cache.totalMovedFiles = 0;
         Cache.totalUnMovedFiles = 0;
     }

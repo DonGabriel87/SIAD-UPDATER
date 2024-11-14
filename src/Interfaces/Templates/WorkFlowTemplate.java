@@ -1,7 +1,6 @@
 package Interfaces.Templates;
 
 import Classes.Core.App.Cache;
-import Classes.Core.App.Task;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
